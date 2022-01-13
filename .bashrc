@@ -5,7 +5,7 @@ export PATH=$PATH:~/.local/bin
 
 ##	+-----------------------------------+-----------------------------------+
 ##	|                                                                       |
-##	|                            FANCY BASH PROMT                           |
+##	|                            FANCY BASH PROMPT                           |
 ##	|                                                                       |
 ##	| Copyright (c) 2018, Andres Gongora <mail@andresgongora.com>.          |
 ##	|                                                                       |
