@@ -1,6 +1,7 @@
 autojump
 awesome-terminal-fonts
 github-desktop-bin
+google-chrome
 lightly-git
 lightlyshaders-git
 nerd-fonts-fira-code

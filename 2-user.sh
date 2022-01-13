@@ -22,6 +22,9 @@ ln -s "~/zsh/.zshrc" ~/.zshrc
 
 yay -S --noconfirm --needed - < ~/CrummyArch/pkg-files/aur-pkgs.txt
 
+echo -ne "
+Configuring the KDE Desktop
+"
 export PATH=$PATH:~/.local/bin
 cp -r ~/CrummyArch/dotfiles/* ~/.config/
 pip install konsave

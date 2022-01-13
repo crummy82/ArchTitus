@@ -41,7 +41,7 @@ echo -ne "
                     Setting up SDDM Theme
 -------------------------------------------------------------------------
 "
-cat <<EOF > /etc/sddm.conf
+cat << EOF > /etc/sddm.conf
 [Theme]
 Current=Nordic
 EOF
@@ -58,6 +58,14 @@ systemctl disable dhcpcd.service
 systemctl stop dhcpcd.service
 systemctl enable NetworkManager.service
 systemctl enable bluetooth
+
+echo -ne "
+-------------------------------------------------------------------------
+                    Enabling SSH with password login
+-------------------------------------------------------------------------
+"
+sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes' /etc/ssh/sshd_config
+
 echo -ne "
 -------------------------------------------------------------------------
                     Cleaning 
