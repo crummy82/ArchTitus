@@ -8,6 +8,7 @@ echo -ne "
 Final Setup and Configurations
 GRUB EFI Bootloader Install & Check
 "
+sleep 3
 source /root/CrummyArch/setup.conf
 if [[ -d "/sys/firmware/efi" ]]; then
     grub-install --efi-directory=/boot ${DISK}
@@ -35,15 +36,17 @@ echo -ne "
                     Enabling Login Display Manager
 -------------------------------------------------------------------------
 "
+sleep 3
 systemctl enable sddm.service
 echo -ne "
 -------------------------------------------------------------------------
                     Setting up SDDM Theme
 -------------------------------------------------------------------------
 "
-cat << EOF > /etc/sddm.conf
+sleep 3
+cat << EOF > /etc/sddm.conf.d/kde_settings.conf
 [Theme]
-Current=Nordic
+Current=breeze
 EOF
 
 echo -ne "
@@ -51,6 +54,7 @@ echo -ne "
                     Enabling Essential Services
 -------------------------------------------------------------------------
 "
+sleep 3
 systemctl enable cups.service
 ntpd -qg
 systemctl enable ntpd.service
@@ -64,13 +68,16 @@ echo -ne "
                     Enabling SSH with password login
 -------------------------------------------------------------------------
 "
+sleep 3
 sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+systemctl restart sshd
 
 echo -ne "
 -------------------------------------------------------------------------
                     Cleaning 
 -------------------------------------------------------------------------
 "
+sleep 3
 # Remove no password sudo rights
 sed -i 's/^%wheel ALL=(ALL) NOPASSWD: ALL/# %wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
 # Add sudo rights

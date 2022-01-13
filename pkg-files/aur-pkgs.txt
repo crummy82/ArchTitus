@@ -14,6 +14,8 @@ papirus-icon-theme
 plasma-pa
 sddm-nordic-theme-git
 snapper-gui-git
+sublime-merge
+sublime-text-4
 ttf-droid
 ttf-hack
 ttf-meslo

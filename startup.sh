@@ -41,7 +41,7 @@ case $FS in
 1) set_option FS btrfs;;
 2) set_option FS ext4;;
 0) exit ;;
-*) echo "Wrong option please select again"; filesystem;;
+*) echo "Invalid option please select again"; filesystem;;
 esac
 }
 
@@ -51,14 +51,14 @@ time_zone="$(curl --fail https://ipapi.co/timezone)"
 echo -ne "System detected your timezone to be '$time_zone' \n"
 echo -ne "Is this correct? yes/no:" 
 read answer
-case $answer in
-    y|Y|yes|Yes|YES)
+case ${answer,,} in
+    y|yes)
     set_option TIMEZONE $time_zone;;
-    n|N|no|NO|No)
+    n|no)
     echo "Please enter your desired timezone e.g. Europe/London :" 
     read new_timezone
     set_option TIMEZONE $new_timezone;;
-    *) echo "Wrong option. Try again";timezone;;
+    *) echo "Invalid option. Try again";timezone;;
 esac
 }
 
@@ -110,8 +110,8 @@ set_option USERNAME ${username,,} # convert to lower case
 echo -ne "Please enter your desired password: \n"
 read -s password # read password without echo
 set_option PASSWORD $password
-read -rep "Please enter your desired hostname: " MACHINENAME
-set_option MACHINENAME $MACHINENAME
+read -rep "Please enter your desired hostname: " machinename
+set_option MACHINENAME $machinename
 }
 
 # Start running functions

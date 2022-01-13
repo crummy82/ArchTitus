@@ -5,8 +5,9 @@ echo -ne "
                         SCRIPTHOME: CrummyArch
 -------------------------------------------------------------------------
 
-Installing AUR Softwares
+Installing AUR Software
 "
+sleep 3
 # You can solve users running this script as root with this and then doing the same for the next for statement. However I will leave this up to you.
 source $HOME/CrummyArch/setup.conf
 
@@ -27,8 +28,8 @@ Configuring the KDE Desktop
 "
 export PATH=$PATH:~/.local/bin
 cp -r ~/CrummyArch/dotfiles/* ~/.config/
-pip install konsave
-konsave -i ~/CrummyArch/kde.knsv
+pip3 install konsave
+konsave -i ~/CrummyArch/brads_kde.knsv
 sleep 1
 konsave -a kde
 
@@ -37,4 +38,5 @@ echo -ne "
                     SYSTEM READY FOR 3-post-setup.sh
 -------------------------------------------------------------------------
 "
+sleep 3
 exit

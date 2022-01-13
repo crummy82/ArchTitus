@@ -11,6 +11,7 @@ echo -ne "
                     Network Setup 
 -------------------------------------------------------------------------
 "
+sleep 3
 pacman -S networkmanager dhclient --noconfirm --needed
 systemctl enable --now NetworkManager
 echo -ne "
@@ -18,6 +19,7 @@ echo -ne "
                     Setting up mirrors for optimal download 
 -------------------------------------------------------------------------
 "
+sleep 3
 pacman -S --noconfirm pacman-contrib curl
 pacman -S --noconfirm reflector rsync
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
@@ -30,6 +32,7 @@ echo -ne "
 				changing the compression settings.
 -------------------------------------------------------------------------
 "
+sleep 3
 TOTALMEM=$(cat /proc/meminfo | grep -i 'memtotal' | grep -o '[[:digit:]]*')
 if [[  $TOTALMEM -gt 8000000 ]]; then
 sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
@@ -40,6 +43,7 @@ echo -ne "
                     Setup Language to US and set locale  
 -------------------------------------------------------------------------
 "
+sleep 3
 sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen
 timedatectl --no-ask-password set-timezone ${TIMEZONE}
@@ -64,6 +68,7 @@ echo -ne "
                     Installing Base System  
 -------------------------------------------------------------------------
 "
+sleep 3
 cat /root/CrummyArch/pkg-files/pacman-pkgs.txt | while read line 
 do
     echo "INSTALLING: ${line}"
@@ -74,6 +79,7 @@ echo -ne "
                     Installing Microcode
 -------------------------------------------------------------------------
 "
+sleep 3
 # determine processor type and install microcode
 proc_type=$(lscpu)
 if grep -E "GenuineIntel" <<< ${proc_type}; then
@@ -91,6 +97,7 @@ echo -ne "
                     Installing Graphics Drivers
 -------------------------------------------------------------------------
 "
+sleep 3
 # Graphics Drivers find and install
 gpu_type=$(lspci)
 if grep -E "NVIDIA|GeForce" <<< ${gpu_type}; then
@@ -109,6 +116,7 @@ echo -ne "
                     Adding User
 -------------------------------------------------------------------------
 "
+sleep 3
 if [ $(whoami) = "root"  ]; then
     groupadd libvirt
     useradd -m -G wheel,libvirt -s /bin/bash $USERNAME 
@@ -128,3 +136,4 @@ echo -ne "
                     SYSTEM READY FOR 2-user.sh
 -------------------------------------------------------------------------
 "
+sleep 3
