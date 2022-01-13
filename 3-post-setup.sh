@@ -64,7 +64,7 @@ echo -ne "
                     Enabling SSH with password login
 -------------------------------------------------------------------------
 "
-sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes' /etc/ssh/sshd_config
+sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
 
 echo -ne "
 -------------------------------------------------------------------------
