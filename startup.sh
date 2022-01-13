@@ -107,7 +107,7 @@ set_option DISK $option
 userinfo () {
 read -p "Please enter your desired username: " username
 set_option USERNAME ${username,,} # convert to lower case
-echo -ne "Please enter your password: \n"
+echo -ne "Please enter your desired password: \n"
 read -s password # read password without echo
 set_option PASSWORD $password
 read -rep "Please enter your desired hostname: " MACHINENAME

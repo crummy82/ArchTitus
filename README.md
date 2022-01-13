@@ -15,15 +15,13 @@ From initial Prompt type the following commands:
 pacman -Sy git
 git clone https://github.com/crummy82/CrummyArch
 cd CrummyArch
+chmod +x crummyarch.sh
 ./crummyarch.sh
 ```
 
 ### System Description
 This is completely automated Arch install with the KDE desktop environment with some useful custimizations and installed applications.
 
-## Troubleshooting
-
-__[Arch Linux Installation Guide](https://github.com/rickellis/Arch-Linux-Install-Guide)__
 
 ### No Wifi
 
