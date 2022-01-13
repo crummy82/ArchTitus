@@ -38,6 +38,7 @@ dosfstools
 dtc
 efibootmgr
 egl-wayland
+exa
 exfat-utils
 extra-cmake-modules
 filelight
@@ -69,7 +70,6 @@ kinfocenter
 kscreen
 kvantum-qt5
 kde-gtk-config
-kitty
 konsole
 kscreen
 layer-shell-qt
@@ -80,7 +80,6 @@ linux
 linux-firmware
 linux-headers
 lsof
-lutris
 lzop
 m4
 make
@@ -115,6 +114,7 @@ qemu
 rsync
 sddm
 sddm-kcm
+snap-pac
 snapper
 spectacle
 steam

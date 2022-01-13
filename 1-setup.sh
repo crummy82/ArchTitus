@@ -1,18 +1,11 @@
 #!/usr/bin/env bash
 echo -ne "
 -------------------------------------------------------------------------
-   █████╗ ██████╗  ██████╗██╗  ██╗████████╗██╗████████╗██╗   ██╗███████╗
-  ██╔══██╗██╔══██╗██╔════╝██║  ██║╚══██╔══╝██║╚══██╔══╝██║   ██║██╔════╝
-  ███████║██████╔╝██║     ███████║   ██║   ██║   ██║   ██║   ██║███████╗
-  ██╔══██║██╔══██╗██║     ██╔══██║   ██║   ██║   ██║   ██║   ██║╚════██║
-  ██║  ██║██║  ██║╚██████╗██║  ██║   ██║   ██║   ██║   ╚██████╔╝███████║
-  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝   ╚═╝    ╚═════╝ ╚══════╝
--------------------------------------------------------------------------
-                    Automated Arch Linux Installer
-                        SCRIPTHOME: ArchTitus
+                Crummy Automated Arch Linux Installer
+                        SCRIPTHOME: CrummyArch
 -------------------------------------------------------------------------
 "
-source /root/ArchTitus/setup.conf
+source /root/CrummyArch/setup.conf
 echo -ne "
 -------------------------------------------------------------------------
                     Network Setup 
@@ -71,7 +64,7 @@ echo -ne "
                     Installing Base System  
 -------------------------------------------------------------------------
 "
-cat /root/ArchTitus/pkg-files/pacman-pkgs.txt | while read line 
+cat /root/CrummyArch/pkg-files/pacman-pkgs.txt | while read line 
 do
     echo "INSTALLING: ${line}"
    sudo pacman -S --noconfirm --needed ${line}
@@ -110,46 +103,7 @@ elif grep -E "Integrated Graphics Controller" <<< ${gpu_type}; then
 elif grep -E "Intel Corporation UHD" <<< ${gpu_type}; then
     pacman -S libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa --needed --noconfirm
 fi
-#SETUP IS WRONG THIS IS RUN
-if ! source /root/ArchTitus/setup.conf; then
-	# Loop through user input until the user gives a valid username
-	while true
-	do 
-		read -p "Please enter username:" username
-		# username regex per response here https://unix.stackexchange.com/questions/157426/what-is-the-regex-to-validate-linux-users
-		# lowercase the username to test regex
-		if [[ "${username,,}" =~ ^[a-z_]([a-z0-9_-]{0,31}|[a-z0-9_-]{0,30}\$)$ ]]
-		then 
-			break
-		fi 
-		echo "Incorrect username."
-	done 
-# convert name to lowercase before saving to setup.conf
-echo "username=${username,,}" >> ${HOME}/ArchTitus/setup.conf
 
-    #Set Password
-    read -p "Please enter password:" password
-echo "password=${password,,}" >> ${HOME}/ArchTitus/setup.conf
-
-    # Loop through user input until the user gives a valid hostname, but allow the user to force save 
-	while true
-	do 
-		read -p "Please name your machine:" nameofmachine
-		# hostname regex (!!couldn't find spec for computer name!!)
-		if [[ "${nameofmachine,,}" =~ ^[a-z][a-z0-9_.-]{0,62}[a-z0-9]$ ]]
-		then 
-			break 
-		fi 
-		# if validation fails allow the user to force saving of the hostname
-		read -p "Hostname doesn't seem correct. Do you still want to save it? (y/n)" force 
-		if [[ "${force,,}" = "y" ]]
-		then 
-			break 
-		fi 
-	done 
-
-    echo "nameofmachine=${nameofmachine,,}" >> ${HOME}/ArchTitus/setup.conf
-fi
 echo -ne "
 -------------------------------------------------------------------------
                     Adding User
@@ -161,20 +115,14 @@ if [ $(whoami) = "root"  ]; then
 
 # use chpasswd to enter $USERNAME:$password
     echo "$USERNAME:$PASSWORD" | chpasswd
-	cp -R /root/ArchTitus /home/$USERNAME/
-    chown -R $USERNAME: /home/$USERNAME/ArchTitus
-# enter $nameofmachine to /etc/hostname
-	echo $nameofmachine > /etc/hostname
+	cp -R /root/CrummyArch /home/$USERNAME/
+    chown -R $USERNAME: /home/$USERNAME/CrummyArch
+# add $MACHINENAME to /etc/hostname
+	echo $MACHINENAME > /etc/hostname
 else
-	echo "You are already a user proceed with aur installs"
+	echo "You are already a user proceed with AUR installs"
 fi
-if [[ ${FS} == "luks" ]]; then
-# Making sure to edit mkinitcpio conf if luks is selected
-# add encrypt in mkinitcpio.conf before filesystems in hooks
-    sed -i 's/filesystems/encrypt filesystems/g' /etc/mkinitcpio.conf
-# making mkinitcpio with linux kernel
-    mkinitcpio -p linux
-fi
+
 echo -ne "
 -------------------------------------------------------------------------
                     SYSTEM READY FOR 2-user.sh
