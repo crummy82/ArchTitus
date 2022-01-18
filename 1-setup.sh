@@ -21,7 +21,7 @@ echo -ne "
 "
 sleep 3
 pacman -S --noconfirm pacman-contrib curl
-pacman -S --noconfirm reflector rsync
+pacman -S --noconfirm reflector rsync grub btrfs-progs arch-install-scripts git
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 
 nc=$(grep -c ^processor /proc/cpuinfo)
@@ -110,46 +110,6 @@ elif grep -E "Integrated Graphics Controller" <<< ${gpu_type}; then
 elif grep -E "Intel Corporation UHD" <<< ${gpu_type}; then
     pacman -S libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa --needed --noconfirm
 fi
-#SETUP IS WRONG THIS IS RUN
-if ! source /root/CrummyArch/setup.conf; then
-    # Loop through user input until the user gives a valid username
-    while true
-    do 
-        read -p "Please enter username:" username
-        # username regex per response here https://unix.stackexchange.com/questions/157426/what-is-the-regex-to-validate-linux-users
-        # lowercase the username to test regex
-        if [[ "${username,,}" =~ ^[a-z_]([a-z0-9_-]{0,31}|[a-z0-9_-]{0,30}\$)$ ]]
-        then 
-            break
-        fi 
-        echo "Incorrect username."
-    done 
-# convert name to lowercase before saving to setup.conf
-echo "username=${username,,}" >> ${HOME}/CrummyArch/setup.conf
-
-    #Set Password
-    read -p "Please enter password:" password
-echo "password=${password,,}" >> ${HOME}/CrummyArch/setup.conf
-
-    # Loop through user input until the user gives a valid hostname, but allow the user to force save 
-    while true
-    do 
-        read -p "Please name your machine:" nameofmachine
-        # hostname regex (!!couldn't find spec for computer name!!)
-        if [[ "${nameofmachine,,}" =~ ^[a-z][a-z0-9_.-]{0,62}[a-z0-9]$ ]]
-        then 
-            break 
-        fi 
-        # if validation fails allow the user to force saving of the hostname
-        read -p "Hostname doesn't seem correct. Do you still want to save it? (y/n)" force 
-        if [[ "${force,,}" = "y" ]]
-        then 
-            break 
-        fi 
-    done 
-
-    echo "nameofmachine=${nameofmachine,,}" >> ${HOME}/CrummyArch/setup.conf
-fi
 
 echo -ne "
 -------------------------------------------------------------------------
@@ -165,7 +125,7 @@ if [ $(whoami) = "root"  ]; then
     echo "$USERNAME:$PASSWORD" | chpasswd
 	cp -R /root/CrummyArch /home/$USERNAME/
     chown -R $USERNAME: /home/$USERNAME/CrummyArch
-# add $MACHINENAME to /etc/hostname
+# Change hostname to $MACHINENAME
 	echo $MACHINENAME > /etc/hostname
 else
 	echo "You are already a user proceed with AUR installs"
