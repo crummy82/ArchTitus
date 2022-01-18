@@ -15,7 +15,7 @@ set_option() {
     if grep -Eq "^${1}.*" $CONFIG_FILE; then # check if option exists
         sed -i -e "/^${1}.*/d" $CONFIG_FILE # delete option if exists
     fi
-    echo "${1}=${2}" >>$CONFIG_FILE # add option
+    echo "${1}=${2}" >> $CONFIG_FILE # add option
 }
 
 logo () {
@@ -74,9 +74,9 @@ read ssd_drive
 
 case ${ssd_drive,,} in
     y|yes)
-    echo "mountoptions=noatime,compress=zstd,ssd,commit=120" >> setup.conf;;
+    set_option mountoptions "noatime,compress=zstd,ssd,commit=120";;
     n|no)
-    echo "mountoptions=noatime,compress=zstd,commit=120" >> setup.conf;;
+    set_option mountoptions "noatime,compress=zstd,commit=120";;
     *) echo "Invalid option. Try again";drivessd;;
 esac
 }
@@ -98,10 +98,8 @@ echo -ne "
 Please enter full path to disk: (example /dev/sda):
 "
 read option
-echo "DISK=$option" >> setup.conf
-
-drivessd
 set_option DISK $option
+drivessd
 }
 
 userinfo () {
