@@ -8,7 +8,7 @@ echo -ne "
 
 Setting up mirrors for optimal download
 "
-source setup.conf
+source $SCRIPT_DIR/setup.conf
 iso=$(curl -4 ifconfig.co/country-iso)
 timedatectl set-ntp true
 pacman -S --noconfirm pacman-contrib terminus-font

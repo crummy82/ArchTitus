@@ -10,7 +10,7 @@ echo -ne "
                 Scripts are in directory named CrummyArch
 "
     bash startup.sh
-    source setup.conf
+    source $SCRIPT_DIR/setup.conf
     bash 0-preinstall.sh
     arch-chroot /mnt /root/CrummyArch/1-setup.sh
     arch-chroot /mnt /usr/bin/runuser -u $USERNAME -- /home/$USERNAME/CrummyArch/2-user.sh

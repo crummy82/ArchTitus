@@ -8,8 +8,7 @@ echo -ne "
 Installing AUR Software
 "
 sleep 3
-# You can solve users running this script as root with this and then doing the same for the next for statement. However I will leave this up to you.
-source $HOME/CrummyArch/setup.conf
+source /root/CrummyArch/setup.conf
 
 cd ~
 git clone "https://aur.archlinux.org/yay.git"
