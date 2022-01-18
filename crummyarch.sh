@@ -20,5 +20,5 @@ echo -ne "
 -------------------------------------------------------------------------
                 Crummy Automated Arch Linux Installer
 -------------------------------------------------------------------------
-                Done - Please Eject Install Media and Reboot
+                Done - Please Eject Install Media and Reboot 
 "
