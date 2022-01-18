@@ -10,7 +10,6 @@ plasma-desktop
 alsa-plugins
 alsa-utils
 ark
-audiocd-kio
 autoconf
 automake
 base
@@ -117,7 +116,6 @@ sddm-kcm
 snap-pac
 snapper
 spectacle
-steam
 sudo
 swtpm
 synergy
@@ -133,9 +131,6 @@ virt-manager
 virt-viewer
 wget
 which
-wine-gecko
-wine-mono
-winetricks
 xdg-desktop-portal-kde
 xdg-user-dirs
 zeroconf-ioslave
