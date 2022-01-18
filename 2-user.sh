@@ -29,9 +29,10 @@ Configuring the KDE Desktop
 export PATH=$PATH:~/.local/bin
 cp -r ~/CrummyArch/dotfiles/* ~/.config/
 pip3 install konsave
+mkdir -p ~/.local/share/konsole/
 konsave -i ~/CrummyArch/brads_kde.knsv
 sleep 1
-konsave -a kde
+konsave -a brads_kde
 
 echo -ne "
 -------------------------------------------------------------------------

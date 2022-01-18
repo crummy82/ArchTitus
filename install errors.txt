@@ -1,0 +1,22 @@
+ERRORS
+
+17:49:30: cp: cannot stat '/home/brad/CrummyArch/dotfiles/*': No such file or directory
+17:49:30: Defaulting to user installation because normal site-packages is not writeable
+
+17:49:50: Konsave: [Errno 2] No such file or directory: '/home/brad/.local/share/konsole'
+17:49:50: Please check the log at /home/brad/konsave_log.txt for more details.
+
+17:49:50: Konsave: Importing ".icons"...
+17:49:50: Konsave: Profile successfully imported!
+17:49:51: Konsave: Profile not found :(
+17:49:51: Please check the log at /home/brad/konsave_log.txt for more details.
+
+17:50:06: /root/CrummyArch/3-post-setup.sh: line 47: /etc/sddm.conf.d/kde_settings.conf: No such file or directory
+
+17:50:16: Created symlink /etc/systemd/system/multi-user.target.wants/ntpd.service → /usr/lib/systemd/system/ntpd.service.
+17:50:16: Failed to disable unit, unit dhcpcd.service does not exist.
+17:50:16: Running in chroot, ignoring command 'stop'
+
+17:50:16:                     Enabling SSH with password login
+17:50:16: -------------------------------------------------------------------------
+17:50:19: Running in chroot, ignoring command 'restart'

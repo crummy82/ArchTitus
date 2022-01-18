@@ -44,6 +44,7 @@ echo -ne "
 -------------------------------------------------------------------------
 "
 sleep 3
+touch /etc/sddm.conf.d/kde_settings.conf
 cat << EOF > /etc/sddm.conf.d/kde_settings.conf
 [Theme]
 Current=breeze
@@ -62,6 +63,7 @@ systemctl disable dhcpcd.service
 systemctl stop dhcpcd.service
 systemctl enable NetworkManager.service
 systemctl enable bluetooth
+systemctl enable sshd
 
 echo -ne "
 -------------------------------------------------------------------------
@@ -70,7 +72,6 @@ echo -ne "
 "
 sleep 3
 sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
-systemctl restart sshd
 
 echo -ne "
 -------------------------------------------------------------------------
