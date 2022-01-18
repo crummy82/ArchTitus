@@ -60,10 +60,10 @@ createsubvolumes () {
 }
 
 mountallsubvol () {
-    mount -o ${mountoptions},subvol=@home /dev/mapper/ROOT /mnt/home
-    mount -o ${mountoptions},subvol=@tmp /dev/mapper/ROOT /mnt/tmp
-    mount -o ${mountoptions},subvol=@.snapshots /dev/mapper/ROOT /mnt/.snapshots
-    mount -o ${mountoptions},subvol=@var /dev/mapper/ROOT /mnt/var
+    mount -o ${MOUNTOPTIONS},subvol=@home /dev/mapper/ROOT /mnt/home
+    mount -o ${MOUNTOPTIONS},subvol=@tmp /dev/mapper/ROOT /mnt/tmp
+    mount -o ${MOUNTOPTIONS},subvol=@.snapshots /dev/mapper/ROOT /mnt/.snapshots
+    mount -o ${MOUNTOPTIONS},subvol=@var /dev/mapper/ROOT /mnt/var
 }
 
 if [[ "${DISK}" =~ "nvme" ]]; then
