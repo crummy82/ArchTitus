@@ -28,52 +28,18 @@ set_option() {
 }
 
 
-# Select btrfs or ext4 for the filesystem
-filesystem () {
-echo -ne "
-    Please Select your file system for both boot and root
-    1)      btrfs
-    2)      ext4
-    0)      exit
-"
-read FS
-case $FS in
-1) set_option FS btrfs;;
-2) set_option FS ext4;;
-0) exit ;;
-*) echo "Invalid option please select again"; filesystem;;
-esac
-}
+# User enters their desired username, password, and hostname
+clear
+read -p "Please enter your desired username: " username
+set_option USERNAME ${username,,} # convert to lower case
+echo -ne "Please enter your desired password: \n"
+read -s password # read password without echo
+set_option PASSWORD $password
+read -rep "Please enter your desired hostname: " machinename
+set_option MACHINENAME $machinename
 
 
-# Fetch timezone from the net and ask to set it to that or make it something else
-timezone () {
-# Added this from arch wiki https://wiki.archlinux.org/title/System_time
-time_zone="$(curl --fail https://ipapi.co/timezone)"
-echo -ne "System detected your timezone to be '$time_zone' \n"
-echo -ne "Is this correct? yes/no:" 
-read answer
-case ${answer,,} in
-    y|yes)
-    set_option TIMEZONE $time_zone;;
-    n|no)
-    echo "Please enter your desired timezone e.g. Europe/London :" 
-    read new_timezone
-    set_option TIMEZONE $new_timezone;;
-    *) echo "Invalid option. Try again";timezone;;
-esac
-}
-
-
-#Set keymapping to US
-keymap () {
-set_option KEYMAP "us"
-}
-
-
-# User selection of disk and disk type
-diskpart () {
-# show disks present on system
+# User selection of disk and filesystem type
 echo -ne "
 Available storage devices for installation:
 "
@@ -90,7 +56,7 @@ Please enter full path to disk: (example /dev/sda):
 read option
 set_option DISK $option
 
-# Below manages how the fstab mount options will be written depending on disk type
+# How the fstab mount options will be written depending on disk type
 echo -ne "
 Is this an ssd? yes/no:
 "
@@ -102,31 +68,40 @@ case ${ssd_drive,,} in
     set_option MOUNTOPTIONS "noatime,compress=zstd,commit=120";;
     *) echo "Invalid option. Try again";drivessd;;
 esac
-}
 
+# Select btrfs or ext4 for the filesystem
+echo -ne "
+    Please Select your file system for both boot and root
+    1)      btrfs
+    2)      ext4
+    0)      exit
+"
+read FS
+case $FS in
+    1) set_option FS btrfs;;
+    2) set_option FS ext4;;
+    0) exit ;;
+    *) echo "Invalid option please select again"; filesystem;;
+esac
 
-# Get user login info and hostname from the user
-userinfo () {
-read -p "Please enter your desired username: " username
-set_option USERNAME ${username,,} # convert to lower case
-echo -ne "Please enter your desired password: \n"
-read -s password # read password without echo
-set_option PASSWORD $password
-read -rep "Please enter your desired hostname: " machinename
-set_option MACHINENAME $machinename
-}
+# Fetch timezone from the net and ask to set it to that or make it something else
+# Added this from arch wiki https://wiki.archlinux.org/title/System_time
+time_zone="$(curl --fail https://ipapi.co/timezone)"
+echo -ne "System detected your timezone to be '$time_zone' \n"
+echo -ne "Is this correct? yes/no:" 
+read answer
+case ${answer,,} in
+    y|yes)
+    set_option TIMEZONE $time_zone;;
+    n|no)
+    echo "Please enter your desired timezone e.g. Europe/London :" 
+    read new_timezone
+    set_option TIMEZONE $new_timezone;;
+    *) echo "Invalid option. Try again";timezone;;
+esac
 
-# Start running functions for user interaction of setup
-clear
-userinfo
-clear
-diskpart
-clear
-filesystem
-clear
-timezone
-clear
-keymap
+#Set keymapping to US
+set_option KEYMAP "us"
 
 
 ##### All info received from user. Begin the setup process. #####
@@ -168,19 +143,7 @@ echo -ne "
 "
 sleep 3
 
-# A couple of functions needed if user wants btrfs and subvols
-createsubvolumes () {
-    btrfs subvolume create /mnt/
-    btrfs subvolume create /mnt/home
-    btrfs subvolume create /mnt/.snapshots
-}
-
-mountallsubvol () {
-    mount -o ${MOUNTOPTIONS},subvol=home /dev/mapper/ROOT /mnt/home
-    mount -o ${MOUNTOPTIONS},subvol=@.snapshots /dev/mapper/ROOT /mnt/.snapshots
-}
-
-# 
+# Set different disk label scheme if nvme disk
 if [[ "${DISK}" =~ "nvme" ]]; then
     partition1=${DISK}p1
     partition2=${DISK}p2
@@ -202,34 +165,33 @@ if [[ ! -d "/sys/firmware/efi" ]]; then # Check for BIOS system and create BIOS 
 
 else # create EFI boot partition 1 instead
     sgdisk -n 1::+300M --typecode=1:ef00 --change-name=1:'EFIBOOT' ${DISK}
+    mkfs.vfat -F32 -n "EFIBOOT" ${partition1}
     # Create partition 2 (Root, /), type Linux, using remaining space
     sgdisk -n 2::0 --typecode=2:8300 --change-name=2:'ROOT' ${DISK}
+    
 fi
 
-
+# Update system with new partitions
+partprobe ${DISK}
 
 if [[ "${FS}" == "btrfs" ]]; then
-    mkfs.vfat -F32 -n "EFIBOOT" ${partition1}
     mkfs.btrfs -L ROOT ${partition2} -f
     mount -t btrfs ${partition2} /mnt
+    btrfs subvolume create /mnt/@
+    btrfs subvolume create /mnt/@home
+    btrfs subvolume create /mnt/@.snapshots
+    umount /mnt
+    mount -t btrfs -o subvol=@ -L ROOT /mnt
+
 elif [[ "${FS}" == "ext4" ]]; then
-    mkfs.vfat -F32 -n "EFIBOOT" ${partition1}
     mkfs.ext4 -L ROOT ${partition2}
     mount -t ext4 ${partition2} /mnt
 fi
 
-# checking if user selected btrfs
-if [[ ${FS} == "btrfs" ]]; then
-    ls /mnt | xargs btrfs subvolume delete
-    btrfs subvolume create /mnt/@
-    umount /mnt
-    mount -t btrfs -o subvol=@ -L ROOT /mnt
+if [ -d "/sys/firmware/efi" ]; then
+    # mount efi boot target
+    mkdir -p /mnt/boot/efi
 fi
-
-# mount target
-mkdir /mnt/boot
-mkdir /mnt/boot/efi
-mount -t vfat -L EFIBOOT /mnt/boot/
 
 if ! grep -qs '/mnt' /proc/mounts; then
     echo "Drive is not mounted can not continue"
