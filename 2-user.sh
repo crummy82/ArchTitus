@@ -11,14 +11,15 @@ sleep 3
 source /root/CrummyArch/setup.conf
 
 cd ~
-git clone "https://aur.archlinux.org/yay.git"
+git clone "https://aur.archlinux.org/yay-git.git"
 cd ~/yay
 makepkg -si --noconfirm
 cd ~
-touch "~/.cache/zshhistory"
-git clone "https://github.com/ChrisTitusTech/zsh"
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-ln -s "~/zsh/.zshrc" ~/.zshrc
+# Add Chris Titus's zsh config and powerlevel10k plugin for zsh
+# touch "~/.cache/zshhistory"
+# git clone "https://github.com/ChrisTitusTech/zsh"
+# git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+# ln -s "~/zsh/.zshrc" ~/.zshrc
 
 yay -S --noconfirm --needed - < ~/CrummyArch/pkg-files/aur-pkgs.txt
 
@@ -27,11 +28,12 @@ Configuring the KDE Desktop
 "
 export PATH=$PATH:~/.local/bin
 cp -r ~/CrummyArch/dotfiles/* ~/.config/
-pip install konsave
-mkdir -p ~/.local/share/konsole/
-konsave -i ~/CrummyArch/brads_kde.knsv
-sleep 1
-konsave -a brads_kde
+# KDE auto configuration section
+# pip install konsave
+# mkdir -p ~/.local/share/konsole/
+# konsave -i ~/CrummyArch/brads_kde.knsv
+# sleep 1
+# konsave -a brads_kde
 
 echo -ne "
 -------------------------------------------------------------------------

@@ -39,6 +39,7 @@ fuse3
 fuseiso
 gamemode
 gcc
+gdm
 ghex
 gimp
 git
