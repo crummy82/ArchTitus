@@ -42,18 +42,18 @@ echo -ne "
 -------------------------------------------------------------------------
 "
 sleep 3
-systemctl enable sddm.service
-echo -ne "
--------------------------------------------------------------------------
-                    Setting up SDDM Theme
--------------------------------------------------------------------------
-"
-sleep 3
-touch /etc/sddm.conf.d/kde_settings.conf
-cat << EOF > /etc/sddm.conf.d/kde_settings.conf
-[Theme]
-Current=breeze
-EOF
+systemctl enable gdm.service
+# echo -ne "
+# -------------------------------------------------------------------------
+#                     Setting up SDDM Theme
+# -------------------------------------------------------------------------
+# "
+# sleep 3
+# touch /etc/sddm.conf.d/kde_settings.conf
+# cat << EOF > /etc/sddm.conf.d/kde_settings.conf
+# [Theme]
+# Current=breeze
+# EOF
 
 echo -ne "
 -------------------------------------------------------------------------
