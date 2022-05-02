@@ -1,0 +1,39 @@
+{
+    "audio": "pipewire",
+    "bootloader": "grub-install",
+    "custom-commands": [
+        "cd /tmp; git clone https://aur.archlinux.org/yay-bin.git",
+	    "cd yay-bin",
+	    "makepkg -si"
+	],
+    "filesystem": "btrfs",
+    "gfx_driver": "All open-source (default)",
+    "harddrives": [
+        "/dev/vda"
+    ],
+    "swap": true,
+    "hostname": "arch-test",
+    "kernels": [
+        "linux"
+    ],
+    "keyboard-language": "us",
+    "mirror-region": "United States",
+    "nic": {
+        "NetworkManager": true,
+        "nic": "Use NetworkManager (necessary to configure internet graphically in GNOME and KDE)"
+    },
+    "ntp": true,
+    "packages": ["base-devel", "docker", "git", "wget", "zsh", "neovim", "docker-compose", "rsync"],
+    "profile": "gnome",
+    "desktop-environment": "gnome",
+    "services": ["docker"],
+    "sys-encoding": "utf-8",
+    "sys-language": "en_US",
+    "timezone": "US/Eastern",
+    "superusers": {
+    	"brad": {
+    	    "!password": "Nineteen82"
+    	}
+    },
+    "users": {}
+}
