@@ -7,12 +7,8 @@
 	    "makepkg -si"
 	],
     "filesystem": "btrfs",
-    "gfx_driver": "All open-source (default)",
-    "harddrives": [
-        "/dev/vda"
-    ],
     "swap": true,
-    "hostname": "arch-test",
+    "hostname": "arch-tower",
     "kernels": [
         "linux"
     ],
@@ -23,17 +19,10 @@
         "nic": "Use NetworkManager (necessary to configure internet graphically in GNOME and KDE)"
     },
     "ntp": true,
-    "packages": ["base-devel", "docker", "git", "wget", "zsh", "neovim", "docker-compose", "rsync"],
-    "profile": "gnome",
+    "packages": ["base-devel", "docker", "git", "wget", "zsh", "neovim", "docker-compose", "rsync", "fish"],
     "desktop-environment": "gnome",
     "services": ["docker"],
     "sys-encoding": "utf-8",
     "sys-language": "en_US",
-    "timezone": "US/Eastern",
-    "superusers": {
-    	"brad": {
-    	    "!password": "Nineteen82"
-    	}
-    },
-    "users": {}
+    "timezone": "US/Eastern"
 }
